@@ -1,0 +1,37 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+.venv/
+venv/
+htmlcov/
+.pytest_cache/
+*.db
+test-results.xml
+
+# ===== Node / Frontend =====
+node_modules/
+frontend/dist/
+
+# ===== Environment & Secrets =====
+.env
+*.local
+
+# ===== Uploads & Storage =====
+backend/storage/images/
+
+# ===== IDE & OS =====
+.vscode/
+.idea/
+Thumbs.db
+*.swp
+
+# ===== LaTeX build artifacts =====
+docs/*.aux
+docs/*.log
+docs/*.out
+docs/*.toc
+docs/*.synctex.gz
+docs/*.fls
+docs/*.fdb_latexmk

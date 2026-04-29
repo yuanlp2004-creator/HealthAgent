@@ -1,0 +1,6 @@
+[
+  {"file": "001.png", "systolic": 138, "diastolic": 91, "heart_rate": 102, "source": "real", "note": "LCD 电子血压计实拍"},
+  {"file": "002.png", "systolic": 89,  "diastolic": 52, "heart_rate": 89,  "source": "real", "note": "LCD 电子血压计实拍"},
+  {"file": "003.png", "systolic": 118, "diastolic": 78, "heart_rate": 76,  "source": "real", "note": "LCD 电子血压计实拍"},
+  {"file": "004.png", "systolic": 118, "diastolic": 78, "heart_rate": 70,  "source": "real", "note": "LCD 电子血压计实拍"}
+]

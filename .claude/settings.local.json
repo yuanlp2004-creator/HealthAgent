@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip --version)",
+      "Bash(pip install *)",
+      "Bash(npm --version)",
+      "Bash(powershell.exe -NoProfile -Command \"winget install -e --id OpenJS.NodeJS.LTS --accept-source-agreements --accept-package-agreements --silent\")",
+      "Bash(powershell.exe -NoProfile -Command '& { $env:Path = [System.Environment]::GetEnvironmentVariable\\('\\\\''Path'\\\\'','\\\\''Machine'\\\\''\\) + '\\\\'';'\\\\'' + [System.Environment]::GetEnvironmentVariable\\('\\\\''Path'\\\\'','\\\\''User'\\\\''\\); node --version; npm --version }')",
+      "Bash(cmd.exe /c \"\\\\\"C:\\\\\\\\Program Files\\\\\\\\nodejs\\\\\\\\npm.cmd\\\\\" --version\")",
+      "Bash(cmd.exe /c \"\\\\\"C:\\\\\\\\Program Files\\\\\\\\nodejs\\\\\\\\npm.cmd\\\\\" --version && \\\\\"C:\\\\\\\\Program Files\\\\\\\\nodejs\\\\\\\\node.exe\\\\\" --version\")",
+      "Bash(\"/c/Program Files/nodejs/npm.cmd\" --version)",
+      "Bash(\"/c/Program Files/nodejs/node.exe\" --version)",
+      "Bash(\"/c/Program Files/nodejs/npm.cmd\" install --no-audit --no-fund --loglevel=error)",
+      "Bash(export PATH=\"/c/Program Files/nodejs:$PATH\")",
+      "Bash(npm install *)",
+      "Bash(npm test *)",
+      "Bash(npm run *)",
+      "Bash(docker --version)",
+      "Bash(docker compose *)"
+    ]
+  }
+}
