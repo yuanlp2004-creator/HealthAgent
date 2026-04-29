@@ -111,7 +111,7 @@ HealthAgent/
 │  │  │  ├─ chat_store.py
 │  │  │  └─ user_service.py
 │  │  └─ cli/            # kb ingest/stats 命令行
-│  ├─ data/kb/           # 12 篇占位医学 MD（非权威，待替换）
+│  ├─ data/kb/           # 12 篇权威医学 MD（基于《中国高血压防治指南》、WHO指南等）
 │  ├─ storage/           # 运行时：图片、kb.sqlite
 │  ├─ tests/             # 86 个 pytest（含 e2e 全链路）
 │  └─ tools/rag_eval.py  # RAG 规则式自动评测
@@ -140,7 +140,7 @@ HealthAgent/
 
 ## 7. 已知限制
 
-1. **语料非权威**：12 篇知识库为自编占位，答辩前请替换为 WHO / 国家卫健委 / 中国高血压防治指南等权威材料后 `python -m app.cli.kb ingest data/kb` 增量替换
+1. **知识库已权威化**：12 篇知识库基于《中国高血压防治指南（2024版）》和 WHO 指南等权威文献整理。如需更新内容，运行 `python -m app.cli.kb ingest data/kb` 即可增量替换（内容变更会自动替换向量）
 2. **DashScope 额度**：qwen-plus 与 text-embedding-v3 均按 token 计费（毕设免费额度内），请保管 `.env` 不要提交到仓库
 3. **移动端未适配**：仅桌面 Chrome/Edge 样式最佳；移动浏览器可能出现侧栏遮挡
 4. **部署未完成**：P7 的部署/论文/答辩按计划后置；当前仅本地 `uvicorn + npm run dev` 模式
