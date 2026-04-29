@@ -53,6 +53,10 @@ pip install -e .
 # 复制并填入 DashScope / 百度 OCR Key
 cp .env.example .env
 # 编辑 .env，至少填入 DASHSCOPE_API_KEY（RAG 与 VLM 兜底均依赖）
+#
+# API Key 获取地址：
+#   千问 DashScope：https://dashscope.console.aliyun.com/apiKey
+#   百度 OCR：      https://console.bce.baidu.com/ai/#/ai/ocr/overview/index
 
 # 首次运行：构建医学知识库（约 10s，消耗少量 embedding 额度）
 python -m app.cli.kb ingest data/kb

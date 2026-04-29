@@ -1,6 +1,4 @@
 from functools import lru_cache
-from typing import List
-
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -25,7 +23,7 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 15
     refresh_token_expire_days: int = 7
 
-    cors_origins: List[str] = Field(default_factory=lambda: ["http://localhost:5173"])
+    cors_origins: str = "http://localhost:5173"
 
     ocr_engine: str = "baidu"
     baidu_ocr_ak: str = ""
@@ -54,11 +52,11 @@ class Settings(BaseSettings):
     rag_chunk_size: int = 500
     rag_chunk_overlap: int = 50
 
-    @field_validator("cors_origins", mode="before")
+    @field_validator("cors_origins")
     @classmethod
-    def split_cors(cls, v):
-        if isinstance(v, str):
-            return [s.strip() for s in v.split(",") if s.strip()]
+    def check_cors_not_empty(cls, v):
+        if not v.strip():
+            raise ValueError("CORS_ORIGINS must not be empty")
         return v
 
 
