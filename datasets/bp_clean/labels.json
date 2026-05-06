@@ -1,0 +1,82 @@
+[
+  {
+    "file": "clean_001.png",
+    "systolic": 118,
+    "diastolic": 76,
+    "heart_rate": 72,
+    "source": "synthetic_clean",
+    "note": "手机App深色模式截图 | style=smartphone_dark | effects=['noise', 'brightness']"
+  },
+  {
+    "file": "clean_002.png",
+    "systolic": 132,
+    "diastolic": 85,
+    "heart_rate": 68,
+    "source": "synthetic_clean",
+    "note": "手机App浅色模式截图 | style=smartphone_light | effects=['brightness']"
+  },
+  {
+    "file": "clean_003.png",
+    "systolic": 145,
+    "diastolic": 92,
+    "heart_rate": 80,
+    "source": "synthetic_clean",
+    "note": "电脑端看板截图 | style=computer_dashboard | effects=['noise', 'blur', 'brightness']"
+  },
+  {
+    "file": "clean_004.png",
+    "systolic": 110,
+    "diastolic": 65,
+    "heart_rate": 58,
+    "source": "synthetic_clean",
+    "note": "打印的体检标签 | style=printed_label | effects=['noise']"
+  },
+  {
+    "file": "clean_005.png",
+    "systolic": 155,
+    "diastolic": 98,
+    "heart_rate": 88,
+    "source": "synthetic_clean",
+    "note": "平板App测量结果页 | style=tablet_app | effects=['noise', 'brightness']"
+  },
+  {
+    "file": "clean_006.png",
+    "systolic": 125,
+    "diastolic": 80,
+    "heart_rate": 75,
+    "source": "synthetic_clean",
+    "note": "医用点阵屏设备 | style=medical_device_dotmatrix | effects=[]"
+  },
+  {
+    "file": "clean_007.png",
+    "systolic": 138,
+    "diastolic": 87,
+    "heart_rate": 93,
+    "source": "synthetic_clean",
+    "note": "手机App深色-运动后测量 | style=smartphone_dark | effects=['blur']"
+  },
+  {
+    "file": "clean_008.png",
+    "systolic": 102,
+    "diastolic": 60,
+    "heart_rate": 62,
+    "source": "synthetic_clean",
+    "note": "电脑端历史记录页 | style=computer_dashboard | effects=['noise', 'blur', 'brightness']"
+  },
+  {
+    "file": "clean_009.png",
+    "systolic": 148,
+    "diastolic": 95,
+    "heart_rate": 84,
+    "source": "synthetic_clean",
+    "note": "药房自助机打印小票 | style=printed_label | effects=['noise']"
+  },
+  {
+    "file": "clean_010.png",
+    "systolic": 128,
+    "diastolic": 78,
+    "heart_rate": 70,
+    "source": "synthetic_clean",
+    "note": "平板App周报摘要 | style=tablet_app | effects=['noise', 'blur', 'brightness']"
+  }
+]

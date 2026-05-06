@@ -80,8 +80,8 @@ def _baidu_lines_to_ocr_lines(words: list[dict]) -> list:
 
 
 def _recognize_baidu(image_bytes: bytes) -> tuple[str, list[NumberToken]]:
-    from app.services.ocr.baidu_client import recognize_numbers
-    words = recognize_numbers(image_bytes)
+    from app.services.ocr.baidu_client import recognize_accurate
+    words = recognize_accurate(image_bytes)
     for w in words:
         w.setdefault("probability", {"average": 0.99})
     lines = _baidu_lines_to_ocr_lines(words)
@@ -139,6 +139,35 @@ def _apply_vlm_fallback(result: OCRResult, image_bytes: bytes) -> OCRResult:
 
 
 def recognize(image_bytes: bytes) -> OCRResult:
+    # Step 0: classify image type — if it's a seven-segment LCD, skip OCR and go straight to VLM
+    try:
+        from app.services.ocr.lcd_classifier import classify_lcd
+        from app.services.ocr.qwen_vl_client import recognize_bp as vlm_recognize
+        is_lcd = classify_lcd(image_bytes)
+    except Exception:
+        is_lcd = False
+
+    if is_lcd:
+        logger.info("detected LCD display, routing directly to VLM")
+        vlm = vlm_recognize(image_bytes)
+        fields = OCRFields(
+            systolic=vlm.get("systolic"),
+            diastolic=vlm.get("diastolic"),
+            heart_rate=vlm.get("heart_rate"),
+        )
+        cands = [
+            FieldCandidate(label="systolic", value=fields.systolic, confidence=0.99)
+            for _ in [0] if fields.systolic is not None
+        ] + [
+            FieldCandidate(label="diastolic", value=fields.diastolic, confidence=0.99)
+            for _ in [0] if fields.diastolic is not None
+        ] + [
+            FieldCandidate(label="heart_rate", value=fields.heart_rate, confidence=0.99)
+            for _ in [0] if fields.heart_rate is not None
+        ]
+        return OCRResult(raw_text="[lcd-direct-vlm]", tokens=[], candidates=cands, fields=fields)
+
+    # Not LCD: use OCR primary path with VLM fallback
     engine_name = get_settings().ocr_engine
     if engine_name == "paddle":
         raw_text, tokens = _recognize_paddle(image_bytes)

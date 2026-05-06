@@ -30,6 +30,9 @@ def main() -> int:
 
     for item in labels:
         img_path = dataset / item["file"]
+        if not img_path.exists():
+            print(f"  [SKIP] Missing: {item['file']}")
+            continue
         data = img_path.read_bytes()
         t0 = time.perf_counter()
         res = ocr_service.recognize(data)

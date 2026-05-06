@@ -30,6 +30,17 @@ _PROMPT = (
     '{"systolic": 138, "diastolic": null, "heart_rate": null}'
 )
 
+_CLASSIFY_PROMPT = (
+    "判断这张图片是否属于七段数码管LCD电子血压计屏幕照片。\n"
+    "七段数码管LCD的特征：深色背景（深绿/深灰/黑色），数字由分段的笔划组成"
+    "（类似电子表或计算器显示），数字边缘可能有间隙，通常能看到SYS/DIA/PUL标签。\n"
+    "非LCD的例子：智能手机App界面截图、电脑网页看板、打印的纸质标签、"
+    "平板电脑测量结果页面。\n\n"
+    "严格要求：\n"
+    "1. 只返回严格的 JSON：{\"lcd\": true} 或 {\"lcd\": false}\n"
+    "2. 不要任何解释、markdown、代码块标记。\n"
+)
+
 
 class QwenVLError(RuntimeError):
     pass
@@ -65,10 +76,9 @@ def _coerce_int(v) -> Optional[int]:
     return None
 
 
-def recognize_bp(image_bytes: bytes) -> dict:
+def _call_vlm(image_bytes: bytes, prompt: str) -> str:
+    """Send image + prompt to Qwen-VL, return raw text content."""
     s = get_settings()
-    if not s.dashscope_api_key:
-        raise QwenVLError("DASHSCOPE_API_KEY not configured")
     b64 = base64.b64encode(image_bytes).decode("ascii")
     url = f"data:image/jpeg;base64,{b64}"
     payload = {
@@ -78,7 +88,7 @@ def recognize_bp(image_bytes: bytes) -> dict:
                 "role": "user",
                 "content": [
                     {"type": "image_url", "image_url": {"url": url}},
-                    {"type": "text", "text": _PROMPT},
+                    {"type": "text", "text": prompt},
                 ],
             }
         ],
@@ -94,18 +104,43 @@ def recognize_bp(image_bytes: bytes) -> dict:
         timeout=s.dashscope_timeout,
     )
     if resp.status_code >= 400:
-        logger.warning("qwen-vl http {}: {}", resp.status_code, resp.text[:500])
         raise QwenVLError(f"http {resp.status_code}: {resp.text[:200]}")
     data = resp.json()
     try:
         content = data["choices"][0]["message"]["content"]
     except (KeyError, IndexError, TypeError):
         raise QwenVLError(f"unexpected response: {data}")
-
     if isinstance(content, list):
         content = "".join(c.get("text", "") for c in content if isinstance(c, dict))
+    return content or ""
 
-    parsed = _extract_json(content or "")
+
+def classify_lcd(image_bytes: bytes) -> bool:
+    """Classify whether image is a seven-segment LCD BP monitor screen."""
+    s = get_settings()
+    if not s.dashscope_api_key:
+        return False  # can't classify, fall through to OCR
+    try:
+        content = _call_vlm(image_bytes, _CLASSIFY_PROMPT)
+        parsed = _extract_json(content)
+        if parsed and isinstance(parsed.get("lcd"), bool):
+            return parsed["lcd"]
+    except Exception:
+        pass
+    return False
+
+
+def recognize_bp(image_bytes: bytes) -> dict:
+    s = get_settings()
+    if not s.dashscope_api_key:
+        raise QwenVLError("DASHSCOPE_API_KEY not configured")
+    try:
+        content = _call_vlm(image_bytes, _PROMPT)
+    except Exception as e:
+        logger.warning("qwen-vl http error: {}", e)
+        raise
+
+    parsed = _extract_json(content)
     if parsed is None:
         logger.warning("qwen-vl cannot parse JSON from: {!r}", content)
         return {"systolic": None, "diastolic": None, "heart_rate": None}
