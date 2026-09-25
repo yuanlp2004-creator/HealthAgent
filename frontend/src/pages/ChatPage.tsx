@@ -53,14 +53,23 @@ export default function ChatPage() {
   const [loadingList, setLoadingList] = useState(false);
   const [loadingMsgs, setLoadingMsgs] = useState(false);
   const cancelRef = useRef<(() => void) | null>(null);
+  const activeIdRef = useRef<number | null>(null);
+  const viewVersion = useRef(0);
+  const messageRequest = useRef(0);
+  const listRequest = useRef(0);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  const loadConversations = async () => {
+  const loadConversations = async (selectFirst = false) => {
+    const request = ++listRequest.current;
+    const version = viewVersion.current;
     setLoadingList(true);
     try {
       const items = await chatApi.listConversations();
+      if (request !== listRequest.current) return;
       setConversations(items);
-      if (items.length > 0 && activeId == null) setActiveId(items[0].id);
+      if (selectFirst && version === viewVersion.current && items.length > 0 && activeIdRef.current == null) {
+        selectConversation(items[0].id);
+      }
     } catch (err) {
       message.error(extractError(err, '加载会话失败'));
     } finally {
@@ -69,29 +78,44 @@ export default function ChatPage() {
   };
 
   const loadMessages = async (id: number) => {
+    const request = ++messageRequest.current;
+    const version = viewVersion.current;
+    const isCurrent = () => request === messageRequest.current && version === viewVersion.current && activeIdRef.current === id;
     setLoadingMsgs(true);
     try {
       const items = await chatApi.listMessages(id);
-      setMessages(items);
+      if (isCurrent()) setMessages(items);
     } catch (err) {
-      message.error(extractError(err, '加载消息失败'));
+      if (isCurrent()) message.error(extractError(err, '加载消息失败'));
     } finally {
-      setLoadingMsgs(false);
+      if (isCurrent()) setLoadingMsgs(false);
     }
   };
 
-  useEffect(() => {
-    void loadConversations();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const selectConversation = (id: number | null, load = true) => {
+    ++viewVersion.current;
+    ++messageRequest.current;
+    activeIdRef.current = id;
+    cancelRef.current?.();
+    cancelRef.current = null;
+    setActiveId(id);
+    setMessages([]);
+    setDraft(null);
+    setInput('');
+    setLoadingMsgs(false);
+    if (id != null && load) void loadMessages(id);
+  };
 
   useEffect(() => {
-    if (activeId != null) {
-      setDraft(null);
+    void loadConversations(true);
+    return () => {
+      ++viewVersion.current;
+      ++listRequest.current;
+      ++messageRequest.current;
       cancelRef.current?.();
-      void loadMessages(activeId);
-    }
-  }, [activeId]);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
@@ -100,8 +124,9 @@ export default function ChatPage() {
   const handleNewConversation = async () => {
     try {
       const c = await chatApi.createConversation();
+      ++listRequest.current;
       setConversations((cs) => [c, ...cs]);
-      setActiveId(c.id);
+      selectConversation(c.id, false);
     } catch (err) {
       message.error(extractError(err, '新建会话失败'));
     }
@@ -110,11 +135,10 @@ export default function ChatPage() {
   const handleDelete = async (id: number) => {
     try {
       await chatApi.deleteConversation(id);
+      ++listRequest.current;
+      setLoadingList(false);
       setConversations((cs) => cs.filter((c) => c.id !== id));
-      if (activeId === id) {
-        setActiveId(null);
-        setMessages([]);
-      }
+      if (activeIdRef.current === id) selectConversation(null);
     } catch (err) {
       message.error(extractError(err, '删除失败'));
     }
@@ -132,15 +156,20 @@ export default function ChatPage() {
     if (targetId == null) {
       try {
         const c = await chatApi.createConversation();
+        ++listRequest.current;
         setConversations((cs) => [c, ...cs]);
         targetId = c.id;
-        setActiveId(c.id);
+        selectConversation(c.id, false);
       } catch (err) {
         message.error(extractError(err, '新建会话失败'));
         return;
       }
     }
 
+    const version = viewVersion.current;
+    const isCurrent = () => version === viewVersion.current && activeIdRef.current === targetId;
+    ++messageRequest.current;
+    setLoadingMsgs(false);
     setInput('');
     // optimistically append the user message
     const tempUserMsg: ChatMessageOut = {
@@ -155,16 +184,18 @@ export default function ChatPage() {
     setDraft({ content: '', citations: [], streaming: true });
 
     cancelRef.current = askStream(targetId, q, {
-      onCitations: (cits) => setDraft((d) => (d ? { ...d, citations: cits } : d)),
+      onCitations: (cits) => isCurrent() && setDraft((d) => (d ? { ...d, citations: cits } : d)),
       onDelta: (delta) =>
-        setDraft((d) => (d ? { ...d, content: d.content + delta } : d)),
+        isCurrent() && setDraft((d) => (d ? { ...d, content: d.content + delta } : d)),
       onDone: async () => {
+        if (!isCurrent()) return;
         setDraft(null);
         if (targetId != null) await loadMessages(targetId);
         // refresh sidebar in case title was updated from the first question
-        void loadConversations();
+        if (isCurrent()) void loadConversations();
       },
       onError: (detail) => {
+        if (!isCurrent()) return;
         setDraft((d) => (d ? { ...d, streaming: false } : d));
         message.error(`回答失败：${detail}`);
       },
@@ -172,6 +203,7 @@ export default function ChatPage() {
   };
 
   const handleCancel = () => {
+    ++viewVersion.current;
     cancelRef.current?.();
     cancelRef.current = null;
     setDraft((d) => (d ? { ...d, streaming: false } : d));
@@ -234,7 +266,7 @@ export default function ChatPage() {
                 renderItem={(c) => (
                   <List.Item
                     key={c.id}
-                    onClick={() => setActiveId(c.id)}
+                    onClick={() => selectConversation(c.id)}
                     style={{
                       cursor: 'pointer',
                       padding: 8,

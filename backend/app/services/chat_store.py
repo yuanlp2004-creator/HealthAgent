@@ -41,6 +41,10 @@ def get_conversation(db: Session, user_id: int, conv_id: int) -> Conversation:
 
 def delete_conversation(db: Session, user_id: int, conv_id: int) -> None:
     conv = get_conversation(db, user_id, conv_id)
+    # Delete children explicitly: SQLite connections may not enforce ON DELETE CASCADE.
+    db.query(ChatMessageModel).filter(
+        ChatMessageModel.conversation_id == conv_id
+    ).delete(synchronize_session="fetch")
     db.delete(conv)
     db.commit()
 

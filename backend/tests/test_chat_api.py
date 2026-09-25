@@ -60,6 +60,24 @@ class TestConversationCrud:
             f"/api/v1/chat/conversations/{conv_id}", headers=hb
         ).status_code == 404
 
+    def test_delete_removes_messages_before_recreating(self, client, _mock_rag, db):
+        from app.models.conversation import ChatMessage
+
+        h = _register_and_auth(client)
+        conv_id = client.post("/api/v1/chat/conversations", json={}, headers=h).json()["id"]
+        response = client.post(
+            f"/api/v1/chat/conversations/{conv_id}/ask",
+            json={"question": "旧对话的问题"}, headers=h,
+        )
+        assert "event: done" in response.text
+        assert db.query(ChatMessage).filter_by(conversation_id=conv_id).count() == 2
+        assert client.delete(f"/api/v1/chat/conversations/{conv_id}", headers=h).status_code == 204
+        assert db.query(ChatMessage).filter_by(conversation_id=conv_id).count() == 0
+        new_id = client.post("/api/v1/chat/conversations", json={}, headers=h).json()["id"]
+        assert client.get(
+            f"/api/v1/chat/conversations/{new_id}/messages", headers=h
+        ).json()["items"] == []
+
     def test_delete(self, client):
         h = _register_and_auth(client)
         conv_id = client.post("/api/v1/chat/conversations", json={}, headers=h).json()["id"]
