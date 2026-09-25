@@ -1,0 +1,29 @@
+F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend\.venv\lib\site-packages\pytest_asyncio\plugin.py:208: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+============================= test session starts =============================
+platform win32 -- Python 3.10.11, pytest-8.3.3, pluggy-1.6.0 -- F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend\.venv\Scripts\python.exe
+rootdir: F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-0.24.0, cov-5.0.0
+asyncio: mode=auto, default_loop_scope=None
+collecting ... collected 8 items
+
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-001] PASSED [ 12%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-002] PASSED [ 25%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-003] PASSED [ 37%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-004] PASSED [ 50%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-005] PASSED [ 62%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-006] PASSED [ 75%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-007] PASSED [ 87%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-008] PASSED [100%]
+
+============================== warnings summary ===============================
+.venv\lib\site-packages\starlette\testclient.py:40
+  F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend\.venv\lib\site-packages\starlette\testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: F:\研究生课程作业或设计\软件质量测试\HealthAgent\模块二作业交付包\第一批_袁立沛\执行结果\20260914_213050_720050\results.xml -
+======================== 8 passed, 1 warning in 0.49s =========================

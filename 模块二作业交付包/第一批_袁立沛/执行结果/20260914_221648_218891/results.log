@@ -1,0 +1,41 @@
+F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend\.venv\lib\site-packages\pytest_asyncio\plugin.py:208: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+============================= test session starts =============================
+platform win32 -- Python 3.10.11, pytest-8.3.3, pluggy-1.6.0 -- F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend\.venv\Scripts\python.exe
+rootdir: F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-0.24.0, cov-5.0.0
+asyncio: mode=auto, default_loop_scope=None
+collecting ... collected 20 items
+
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-001] PASSED [  5%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-002] PASSED [ 10%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-003] PASSED [ 15%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-004] PASSED [ 20%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-005] PASSED [ 25%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-006] PASSED [ 30%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-007] PASSED [ 35%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-008] PASSED [ 40%]
+tests/module2/test_auth_ai.py::test_nickname_length_boundary_preserves_previous_value[M2-TC-009] PASSED [ 45%]
+tests/module2/test_auth_ai.py::test_unicode_nickname_boundary_and_clear[M2-TC-010] PASSED [ 50%]
+tests/module2/test_bp_ai.py::test_numeric_lower_boundaries[M2-TC-011] PASSED [ 55%]
+tests/module2/test_bp_ai.py::test_numeric_upper_boundaries[M2-TC-012] PASSED [ 60%]
+tests/module2/test_bp_ai.py::test_invalid_heart_rate_update_preserves_record[M2-TC-013] PASSED [ 65%]
+tests/module2/test_bp_ai.py::test_note_length_boundary_and_rejected_update[M2-TC-014] PASSED [ 70%]
+tests/module2/test_bp_ai.py::test_image_reference_length_boundary[M2-TC-015] PASSED [ 75%]
+tests/module2/test_bp_ai.py::test_foreign_update_and_delete_do_not_mutate_owner_record[M2-TC-016] PASSED [ 80%]
+tests/module2/test_bp_ai.py::test_stats_isolation_rounding_and_missing_heart_rate[M2-TC-017] PASSED [ 85%]
+tests/module2/test_bp_ai.py::test_stats_cutoff_microsecond_boundary[M2-TC-018] PASSED [ 90%]
+tests/module2/test_bp_ai.py::test_closed_time_range_and_descending_pagination[M2-TC-019] PASSED [ 95%]
+tests/module2/test_bp_ai.py::test_query_parameter_boundaries[M2-TC-020] PASSED [100%]
+
+============================== warnings summary ===============================
+.venv\lib\site-packages\starlette\testclient.py:40
+  F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend\.venv\lib\site-packages\starlette\testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: F:\研究生课程作业或设计\软件质量测试\HealthAgent\模块二作业交付包\第一批_袁立沛\执行结果\20260914_221648_218891\results.xml -
+======================= 20 passed, 1 warning in 17.53s ========================

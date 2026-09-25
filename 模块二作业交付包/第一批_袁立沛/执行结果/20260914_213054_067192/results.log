@@ -1,0 +1,60 @@
+F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend\.venv\lib\site-packages\pytest_asyncio\plugin.py:208: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+============================= test session starts =============================
+platform win32 -- Python 3.10.11, pytest-8.3.3, pluggy-1.6.0 -- F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend\.venv\Scripts\python.exe
+rootdir: F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-0.24.0, cov-5.0.0
+asyncio: mode=auto, default_loop_scope=None
+collecting ... collected 39 items
+
+tests/test_auth.py::TestRegister::test_register_success PASSED           [  2%]
+tests/test_auth.py::TestRegister::test_register_duplicate_username PASSED [  5%]
+tests/test_auth.py::TestRegister::test_register_duplicate_email PASSED   [  7%]
+tests/test_auth.py::TestRegister::test_register_validation[bad0] PASSED  [ 10%]
+tests/test_auth.py::TestRegister::test_register_validation[bad1] PASSED  [ 12%]
+tests/test_auth.py::TestRegister::test_register_validation[bad2] PASSED  [ 15%]
+tests/test_auth.py::TestRegister::test_register_validation[bad3] PASSED  [ 17%]
+tests/test_auth.py::TestLogin::test_login_success PASSED                 [ 20%]
+tests/test_auth.py::TestLogin::test_login_wrong_password PASSED          [ 23%]
+tests/test_auth.py::TestLogin::test_login_unknown_user PASSED            [ 25%]
+tests/test_auth.py::TestRefresh::test_refresh_success PASSED             [ 28%]
+tests/test_auth.py::TestRefresh::test_refresh_rejects_access_token PASSED [ 30%]
+tests/test_auth.py::TestRefresh::test_refresh_invalid PASSED             [ 33%]
+tests/test_users.py::TestMe::test_me_requires_auth PASSED                [ 35%]
+tests/test_users.py::TestMe::test_me_ok PASSED                           [ 38%]
+tests/test_users.py::TestMe::test_me_invalid_token PASSED                [ 41%]
+tests/test_users.py::TestUpdateProfile::test_update_profile PASSED       [ 43%]
+tests/test_users.py::TestUpdateProfile::test_update_profile_invalid_gender PASSED [ 46%]
+tests/test_users.py::TestChangePassword::test_change_password_success PASSED [ 48%]
+tests/test_users.py::TestChangePassword::test_change_password_wrong_old PASSED [ 51%]
+tests/test_bp_records.py::TestAuth::test_requires_auth PASSED            [ 53%]
+tests/test_bp_records.py::TestCrud::test_create_and_get PASSED           [ 56%]
+tests/test_bp_records.py::TestCrud::test_list_pagination PASSED          [ 58%]
+tests/test_bp_records.py::TestCrud::test_update_and_delete PASSED        [ 61%]
+tests/test_bp_records.py::TestCrud::test_user_isolation PASSED           [ 64%]
+tests/test_bp_records.py::TestCrud::test_validation_out_of_range PASSED  [ 66%]
+tests/test_bp_records.py::TestStatsAndForecast::test_stats_empty PASSED  [ 69%]
+tests/test_bp_records.py::TestStatsAndForecast::test_stats_with_data PASSED [ 71%]
+tests/test_bp_records.py::TestStatsAndForecast::test_forecast_insufficient PASSED [ 74%]
+tests/test_bp_records.py::TestStatsAndForecast::test_forecast_with_data PASSED [ 76%]
+tests/test_security.py::TestPassword::test_hash_and_verify PASSED        [ 79%]
+tests/test_security.py::TestPassword::test_hash_is_salted PASSED         [ 82%]
+tests/test_security.py::TestJwt::test_access_token_roundtrip PASSED      [ 84%]
+tests/test_security.py::TestJwt::test_refresh_token_type PASSED          [ 87%]
+tests/test_security.py::TestJwt::test_decode_invalid_raises PASSED       [ 89%]
+tests/test_security.py::TestJwt::test_decode_wrong_secret_raises PASSED  [ 92%]
+::test_m1_d01_full_password_and_legacy_compatibility PASSED              [ 94%]
+::test_m1_d02_required_null_rejected_nullable_fields_clearable PASSED    [ 97%]
+::test_m1_d03_timezone_equivalence_create_update_and_query PASSED        [100%]
+
+============================== warnings summary ===============================
+.venv\lib\site-packages\starlette\testclient.py:40
+  F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend\.venv\lib\site-packages\starlette\testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: F:\研究生课程作业或设计\软件质量测试\HealthAgent\模块二作业交付包\第一批_袁立沛\执行结果\20260914_213054_067192\results.xml -
+======================= 39 passed, 1 warning in 27.23s ========================

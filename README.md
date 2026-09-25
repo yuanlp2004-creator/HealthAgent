@@ -40,7 +40,7 @@ HealthAgent/
 │   │   └── main.py             # FastAPI 入口, create_app()
 │   ├── data/kb/                # 12篇医学知识库Markdown文档
 │   ├── storage/                # 运行时存储(向量库/图片)
-│   ├── tests/                  # pytest 86个用例, 82%覆盖率
+│   ├── tests/                  # 后端测试，module2/ 为模块二新增用例
 │   ├── tools/rag_eval.py       # RAG自动评测脚本
 │   ├── pyproject.toml
 │   └── .env                    # 密钥/配置
@@ -71,6 +71,9 @@ HealthAgent/
 ├── pic/                        # 论文插图PNG（图1-3）
 ├── format/                     # 毕业论文格式模板（PDF扫描件）
 ├── revision/                   # 导师返稿修改建议
+├── 模块一自动化代码/             # 模块一单独提取的测试入口
+├── 模块一作业交付包/             # 模块一材料与执行证据
+├── 模块二作业交付包/             # 模块二小组材料、个人材料与执行证据
 ├── docker-compose.yml          # PostgreSQL + Backend
 └── CLAUDE.md                  # Claude Code 开发约定
 ```
@@ -122,12 +125,30 @@ npm run dev         # http://localhost:5173, /api 代理到 :8000
 ### 4. 测试
 
 ```bash
-# 后端 86 用例, 82% 覆盖率
+# 后端测试
 cd backend && python -m pytest --cov=app --cov-report=term-missing
 
-# 前端 15 用例 + 类型检查
+# 前端测试与类型检查
 cd frontend && npm run test -- --run && npx tsc --noEmit
 ```
+
+课程测试入口位于仓库根目录：
+
+```bash
+backend/.venv/bin/python 模块二作业交付包/run_module2_tests.py
+bash 模块一作业交付包/run_module1_tests.sh
+```
+
+课程测试材料按用途查找：
+
+| 位置 | 用途 |
+|---|---|
+| [模块一作业交付包](模块一作业交付包/README.md) | 模块一小组交付材料、成员记录与执行证据 |
+| [模块一自动化代码](模块一自动化代码/README.md) | 单独提取的模块一测试源码 |
+| [模块二作业交付包](模块二作业交付包/README.md) | 模块二小组交付材料、两位成员材料与执行证据 |
+| [backend/tests/module2](backend/tests/module2) | 模块二新增自动化用例 |
+
+成员个人报告和历史日志用于追溯工作过程；小组合并文件在各模块交付包的根目录。
 
 ### 5. Docker
 

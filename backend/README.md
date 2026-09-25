@@ -46,7 +46,7 @@ cd backend
 python -m pytest -q --cov=app --cov-report=term-missing
 ```
 
-当前：**27 通过，覆盖率 96%**。详见 [`docs/P1_测试报告.md`](../docs/P1_测试报告.md)。
+P1 阶段记录为 **27 通过、覆盖率 96%**，详见 [`docs/P1_测试报告.md`](../docs/P1_测试报告.md)。当前测试结果请以本地重新运行的输出为准。
 
 ## E2E 冒烟（P2）
 
